@@ -839,6 +839,7 @@ public class HL7ServiceImpl extends BaseOpenmrsService implements HL7Service {
 		Person person = new Person();
 		
 		// UUID
+		
 		CX[] identifiers = nk1.getNextOfKinAssociatedPartySIdentifiers();
 		String uuid = getUuidFromIdentifiers(identifiers);
 		if (Context.getPersonService().getPersonByUuid(uuid) != null) {
@@ -920,6 +921,12 @@ public class HL7ServiceImpl extends BaseOpenmrsService implements HL7Service {
 		if (gender == null) {
 			throw new HL7Exception("Missing gender in an NK1 segment");
 		}
+		
+		// Security Bug #3 Fix @author Rushikesh Ghatpande - Gender should be either male or female
+		if( !gender.equalsIgnoreCase("M") || !gender.equalsIgnoreCase("F")){
+			throw new HL7Exception("Gender should be either male or female");
+		}
+
 		gender = gender.toUpperCase();
 		if (!OpenmrsConstants.GENDER().containsKey(gender)) {
 			throw new HL7Exception("Unrecognized gender: " + gender);
