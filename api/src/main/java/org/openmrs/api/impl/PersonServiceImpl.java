@@ -37,6 +37,7 @@ import org.openmrs.api.db.PersonDAO;
 import org.openmrs.person.PersonMergeLog;
 import org.openmrs.person.PersonMergeLogData;
 import org.openmrs.serialization.SerializationException;
+import org.openmrs.util.FormInputHandler;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.OpenmrsConstants.PERSON_TYPE;
 import org.openmrs.validator.ValidateUtil;
@@ -606,6 +607,17 @@ public class PersonServiceImpl extends BaseOpenmrsService implements PersonServi
 		// trim off all trailing commas
 		while (name.endsWith(",")) {
 			name = name.substring(0, name.length() - 1);
+		}
+		
+		/*
+		 * 	Script tag check for input data of first name.
+		 *  Modified: 2016-11-11
+		 *  @author: http://github.com/subodh-dharma 
+		 */
+		FormInputHandler formInputHandler = new FormInputHandler();
+		
+		if(!formInputHandler.containsScriptTags(name, "PersonServiceImpl.name")){
+			throw new APIException("Input contains script tags. A security incident is registered.");
 		}
 		
 		String firstName = name;
