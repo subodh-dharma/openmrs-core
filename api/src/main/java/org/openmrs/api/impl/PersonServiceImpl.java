@@ -620,6 +620,9 @@ public class PersonServiceImpl extends BaseOpenmrsService implements PersonServi
 			throw new APIException("Input contains script tags. A security incident is registered.");
 		}
 		
+		if(!formInputHandler.containsXMLOpenComments(name, "PersonServiceImp.name")){
+			throw new APIException("Input contains open-ended xml comments. A security incident is registered.");
+		}
 		String firstName = name;
 		String middleName = "";
 		String lastName = "";

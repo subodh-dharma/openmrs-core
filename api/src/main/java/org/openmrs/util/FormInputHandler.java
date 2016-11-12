@@ -47,4 +47,14 @@ public class FormInputHandler {
 		
 		
 	}
+	public boolean containsXMLOpenComments(String input, String varName){
+		
+		if((input.contains("<!--") && !input.contains("-->")) || (input.contains("-->") && !input.contains("<!--"))){
+			log.info("A possible security incident has occured - XML injection");
+	    	log.debug("XML ATTACK OCCURED, AT INPUT "+varName+" , ACTUAL INPUT STRING : "+input );
+	 		return false;   	
+
+		}
+		return true;
+	}
 }
